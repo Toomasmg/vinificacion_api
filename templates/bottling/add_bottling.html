@@ -1,0 +1,22 @@
+<form 
+method="Post" 
+action="{{ url_for('bottling_bp.add_bottling') }}">
+
+    <div class="mb-3">
+        <label for="bottling_code" class="form-label">Código de Botella</label>
+        <input type="text" name="bottling_code" class="form-control" required>
+
+    </div>
+
+    <div class="mb-3">
+        <label for="aging_id" class="form-label">ID de Crianza</label>
+        <input type="text" name="aging_id" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="date_bottling" class="form-label">Fecha de Embotellado</label>
+        <input type="date" name="date_bottling" class="form-control">
+    </div>
+    
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>

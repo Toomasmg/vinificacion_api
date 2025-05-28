@@ -1,0 +1,22 @@
+{% extends 'layout.html'%}
+{% block title %}Editar Embotellado{% endblock %}
+
+{% block body %}
+<h3>Editar Embotellado</h3>
+<form method="POST">
+    <div class="mb-3">
+        <label for="bottling_code" class="form-label">Código de Botella</label>
+        <input type="text" name="bottling_code" class="form-control" value="{{bottling.bottling_code}}" required>
+    </div>
+    <div class="mb-3">
+        <label for="aging_id" class="form-label">ID de Crianza</label>
+        <input type="text" name="aging_id" class="form-control"  value="{{bottling.aging_id}}"  required>
+    </div>
+    <div class="mb-3">
+        <label for="date_bottling" class="form-label">Fecha de Embotellado</label>
+        <input type="date" name="date_bottling" class="form-control" value="{{bottling.date_bottling}}">
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a href="{{ url_for('bottling_bp.get_bottling')}}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock%}
