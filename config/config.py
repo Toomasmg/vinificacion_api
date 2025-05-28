@@ -9,3 +9,8 @@ host = os.getenv("MYSQL_HOST")
 database = os.getenv("MYSQL_DATABASE")
 
 DATABASE_CONNECTION_URI = f"mysql+pymysql://{user}:{password}@{host}/{database}"
+
+class Config:
+    SQLALCHEMY_DATABASE_URI = DATABASE_CONNECTION_URI
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = "root1" 
