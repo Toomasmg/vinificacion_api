@@ -1,16 +1,22 @@
 from flask import Flask
 from config import Config
 from database import db, init_app
+from routes.grape_reception import grape_reception_bp
 
 def create_app():
     app = Flask(__name__)
+    app.config.from_object(Config)  # ✅ Esto ya carga SECRET_KEY desde config.py
 
-    # Cargar configuración desde config.py
-    app.config.from_object(Config)
-
-    # Inicializar base de datos
     init_app(app)
-    from models import grape_reception
+
+    # SOLO EN DESARROLLO: resetear tablas
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+
+    # Registrar rutas
+    app.register_blueprint(grape_reception_bp)
+
     return app
 
 if __name__ == "__main__":

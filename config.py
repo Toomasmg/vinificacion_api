@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 
+
 # Cargar las variables del archivo .env
 load_dotenv()
 
@@ -13,3 +14,5 @@ class Config:
     
     # Desactiva seguimiento de modificaciones (mejora rendimiento)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    #clave secreta    
+    SECRET_KEY = os.getenv("SECRET_KEY")
