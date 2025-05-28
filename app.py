@@ -1,28 +1,32 @@
 from flask import Flask
-from flask_cors import CORS
-from config.config import DATABASE_CONNECTION_URI
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from models.database import db
 from routes.fermentations import fermentations_bp
+from dotenv import load_dotenv
+import os
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_CONNECTION_URI
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = "vinosecreto"
+# Cargar variables del archivo .env
+load_dotenv()
 
-db.init_app(app)
-CORS(app)
+def create_app():
+    app = Flask(__name__)
+    
+    # Configuración desde el entorno
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DATABASE')}"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SECRET_KEY'] = "vinificacion-secreta"
 
-# Registrar blueprint de fermentation
-app.register_blueprint(fermentations_bp)
+    # Inicializar base de datos y migraciones
+    db.init_app(app)
+    Migrate(app, db)
 
-@app.route("/")
-def home():
-    return "Bienvenido a la API de Vinificación 🍇"
+    # Registrar los blueprints
+    app.register_blueprint(fermentations_bp)
 
-# Crear las tablas automáticamente si no existen
-with app.app_context():
-    db.create_all()
+    return app
 
+# Ejecutar la aplicación
 if __name__ == "__main__":
-    print("🚀 Servidor Flask iniciado en http://localhost:5000")
+    app = create_app()
     app.run(debug=True)
