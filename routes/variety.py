@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from database import db
+from models.database import db
 from models.variety import Variety
 
 variety_bp = Blueprint("variety", __name__, url_prefix="/varieties")
@@ -31,6 +31,8 @@ def add_variety():
         flash(f"Error: {str(e)}", "danger")
 
     return redirect(url_for("variety.list_varieties"))
+
+# Mostrar formulario para editar
 @variety_bp.route("/delete/<string:variety_id>", methods=["POST"])
 def delete_variety(variety_id):
     variety = Variety.query.get(variety_id)
