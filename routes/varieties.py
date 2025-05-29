@@ -4,18 +4,24 @@ from models.variety import Variety
 
 variety_bp = Blueprint("variety", __name__, url_prefix="/varieties")
 
-# Mostrar todas las variedades
+# ----------------------
+# MOSTRAR TODAS LAS VARIEDADES
+# ----------------------
 @variety_bp.route("/", methods=["GET"])
 def list_varieties():
     varieties = Variety.query.all()
     return render_template("variety/varieties.html", varieties=varieties)
 
-# Mostrar formulario para agregar
+# ----------------------
+# FORMULARIO PARA AGREGAR VARIEDAD
+# ----------------------
 @variety_bp.route("/add", methods=["GET"])
 def show_add_variety():
     return render_template("variety/add_variety.html")
 
-# Guardar nueva variedad
+# ----------------------
+# GUARDAR NUEVA VARIEDAD
+# ----------------------
 @variety_bp.route("/add", methods=["POST"])
 def add_variety():
     name = request.form["name"]
@@ -32,7 +38,41 @@ def add_variety():
 
     return redirect(url_for("variety.list_varieties"))
 
-# Mostrar formulario para editar
+# ----------------------
+# FORMULARIO PARA EDITAR VARIEDAD
+# ----------------------
+@variety_bp.route("/edit/<string:variety_id>", methods=["GET"])
+def edit_variety_form(variety_id):
+    variety = Variety.query.get(variety_id)
+    if not variety:
+        flash("Variedad no encontrada", "danger")
+        return redirect(url_for("variety.list_varieties"))
+    return render_template("variety/edit_variety.html", variety=variety)
+
+# ----------------------
+# ACTUALIZAR VARIEDAD
+# ----------------------
+@variety_bp.route("/edit/<string:variety_id>", methods=["POST"])
+def edit_variety(variety_id):
+    variety = Variety.query.get(variety_id)
+    if not variety:
+        flash("Variedad no encontrada", "danger")
+        return redirect(url_for("variety.list_varieties"))
+
+    try:
+        variety.name = request.form["name"]
+        variety.description = request.form["description"]
+        db.session.commit()
+        flash("Variedad actualizada con éxito", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error al actualizar: {str(e)}", "danger")
+
+    return redirect(url_for("variety.list_varieties"))
+
+# ----------------------
+# ELIMINAR VARIEDAD
+# ----------------------
 @variety_bp.route("/delete/<string:variety_id>", methods=["POST"])
 def delete_variety(variety_id):
     variety = Variety.query.get(variety_id)

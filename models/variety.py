@@ -8,5 +8,8 @@ class Variety(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)  # nombre de la variedad
     description = db.Column(db.Text)  # descripción o detalles
 
+    receptions = db.relationship("GrapeReception", backref="variety", lazy=True)
+    fermentations = db.relationship("Fermentation", backref="variety", lazy=True)
+    
     def __repr__(self):
         return f"<Variety {self.name}>"

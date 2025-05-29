@@ -3,9 +3,10 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<div class="text-center mt-5">
-    <h1 class="display-4">Sistema de Vinificación</h1>
-    <p class="lead">Gestión de procesos de vinificación</p>
-    <a href="{{ url_for('fermentations.list_fermentations') }}" class="btn btn-primary btn-lg mt-3">Ver Fermentaciones</a>
+<div class="text-center">
+    <h1 class="mt-5">Bienvenido al Sistema de Gestión de Vinificación 🍇</h1>
+    <p class="lead mt-4">Gestioná las <strong>variedades de uva</strong>, la <strong>recepción</strong> y el proceso de <strong>fermentación</strong> desde un solo lugar.</p>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-3">Ir al Panel General</a>
+
 </div>
 {% endblock %}

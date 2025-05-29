@@ -12,6 +12,8 @@ class Fermentation(db.Model):
     ph = db.Column(db.Float, nullable=True)
     notes = db.Column(db.String(500), nullable=True)
 
+    variety_id = db.Column(db.String(36), db.ForeignKey("variety.id"), nullable=False)
+
     def serialize(self):
         return {
             "id": self.id,

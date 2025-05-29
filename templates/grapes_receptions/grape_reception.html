@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Recepción de Uvas{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Recepción de Uvas</h2>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Botón para abrir modal de agregar -->
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addReceptionModal">
+        + Nueva Recepción
+    </button>
+
+    <!-- Tabla de recepciones -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Proveedor</th>
+                    <th>Variedad</th>
+                    <th>Kilos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reception in receptions %}
+                <tr>
+                    <td>{{ reception.id }}</td>
+                    <td>{{ reception.reception_date }}</td> 
+                    <td>{{ reception.name }}</td>            {# name es proveedor según tu backend #}
+                    <td>{{ reception.variety.name }}</td>    {# Accedo a la relación Variety para mostrar nombre #}
+                    <td>{{ reception.weight }}</td>           {# weight equivale a kilos #}
+                    <td>
+                        <a href="{{ url_for('grape_reception.edit_reception_form', reception_id=reception.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                        <form method="POST" action="{{ url_for('grape_reception.delete_reception', reception_id=reception.id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar esta recepción?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal para agregar nueva recepción -->
+<div class="modal fade" id="addReceptionModal" tabindex="-1" aria-labelledby="addReceptionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="POST" action="{{ url_for('grape_reception.add_reception') }}" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReceptionLabel">Nueva Recepción de Uvas</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" name="reception_date" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Proveedor</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Variedad</label>
+                    <select name="variety_id" class="form-select" required>
+                        {% for variety in varieties %}
+                        <option value="{{ variety.id }}">{{ variety.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kilos</label>
+                    <input type="number" name="weight" class="form-control" step="0.01" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Cantidad (cantidad de cajas, por ejemplo)</label>
+                    <input type="number" name="quantity" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tipo de uva</label>
+                    <input type="text" name="grape_type" class="form-control" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

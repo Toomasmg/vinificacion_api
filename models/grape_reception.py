@@ -26,7 +26,6 @@ class GrapeReception(db.Model):
     
     #relacion con variety
     variety_id = db.Column(db.String(36), db.ForeignKey("variety.id"), nullable=False)
-    variety = db.relationship("Variety", backref="receptions")
 
     # Representación como string
     def __repr__(self):

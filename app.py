@@ -2,9 +2,12 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from models.database import db
-from routes.grape_reception import grape_reception_bp
-from routes.variety import variety_bp
+from routes.grapes_receptions import grape_reception_bp
+from routes.varieties import variety_bp
 from routes.fermentations import fermentations_bp
+from models.variety import Variety
+from models.grape_reception import GrapeReception
+from models.fermentation import Fermentation
 from dotenv import load_dotenv
 import os
 
@@ -19,14 +22,23 @@ def create_app():
     db.init_app(app)
     Migrate(app, db)
 
+    # Blueprints
     app.register_blueprint(grape_reception_bp)
     app.register_blueprint(variety_bp)
     app.register_blueprint(fermentations_bp)
 
-    # Ruta para el índice
+    # Página de inicio
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    # Vista general con todos los datos
+    @app.route('/dashboard')
+    def dashboard():
+        varieties = Variety.query.all()
+        receptions = GrapeReception.query.all()
+        fermentations = Fermentation.query.all()
+        return render_template("dashboard.html", varieties=varieties, receptions=receptions, fermentations=fermentations)
 
     return app
 

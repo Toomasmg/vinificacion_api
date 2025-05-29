@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Vista General{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Vista General del Proceso</h2>
+
+<h4>📦 Variedades de Uva</h4>
+<table class="table table-bordered table-sm mb-4">
+    <thead class="table-light">
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for v in varieties %}
+        <tr>
+            <td>{{ v.name }}</td>
+            <td>{{ v.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4>🚛 Recepción de Uva</h4>
+<table class="table table-bordered table-sm mb-4">
+    <thead class="table-light">
+        <tr>
+            <th>Fecha</th>
+            <th>Proveedor</th>
+            <th>Cantidad (kg)</th>
+            <th>Variedad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in receptions %}
+        <tr>
+            <td>{{ r.date }}</td>
+            <td>{{ r.provider }}</td>
+            <td>{{ r.quantity }}</td>
+            <td>{{ r.variety.name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4>🧪 Fermentaciones</h4>
+<table class="table table-bordered table-sm">
+    <thead class="table-light">
+        <tr>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Temperatura</th>
+            <th>pH</th>
+            <th>Notas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in fermentations %}
+        <tr>
+            <td>{{ f.start_date }}</td>
+            <td>{{ f.end_date }}</td>
+            <td>{{ f.temperature }}°C</td>
+            <td>{{ f.ph }}</td>
+            <td>{{ f.notes }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
