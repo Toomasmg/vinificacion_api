@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Fermentaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Fermentaciones registradas</h2>
+    <a href="{{ url_for('fermentations.new_fermentation') }}" class="btn btn-success mb-3">Nueva Fermentación</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    {% if fermentations %}
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Temp.</th>
+                <th>Acidez</th>
+                <th>pH</th>
+                <th>Notas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in fermentations %}
+            <tr>
+                <td>{{ f.id[:8] }}...</td>
+                <td>{{ f.start_date }}</td>
+                <td>{{ f.end_date or "-" }}</td>
+                <td>{{ f.temperature }}</td>
+                <td>{{ f.acidity }}</td>
+                <td>{{ f.ph }}</td>
+                <td>{{ f.notes }}</td>
+                <td>
+                    <a href="{{ url_for('fermentations.edit_fermentation', id=f.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{{ url_for('fermentations.delete_fermentation', id=f.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta fermentación?')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No hay fermentaciones registradas.</p>
+    {% endif %}
+</div>
+{% endblock %}

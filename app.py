@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from models.database import db
 from routes.grape_reception import grape_reception_bp
 from routes.variety import variety_bp
+from routes.fermentations import fermentations_bp
 from dotenv import load_dotenv
 import os
 
@@ -20,7 +21,9 @@ def create_app():
 
     app.register_blueprint(grape_reception_bp)
     app.register_blueprint(variety_bp)
+    app.register_blueprint(fermentations_bp)
 
+    # Ruta para el índice
     @app.route('/')
     def index():
         return render_template('index.html')
@@ -31,5 +34,5 @@ if __name__ == "__main__":
     app = create_app()
     with app.app_context():
         db.create_all()
-
+        
     app.run(debug=True)
