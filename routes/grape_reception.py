@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, abort
-from database import db
+from models.database import db
 from models.grape_reception import GrapeReception
 from datetime import datetime
 

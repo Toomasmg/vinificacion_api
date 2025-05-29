@@ -1,5 +1,5 @@
 import uuid
-from database import db
+from models.database import db
 from models.variety import Variety
 
 # Modelo que representa la recepción de la uva en la bodega
