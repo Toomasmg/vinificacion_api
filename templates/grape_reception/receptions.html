@@ -17,6 +17,7 @@
             <th>Peso (kg)</th>
             <th>Fecha de Recepción</th>
             <th>acciones</th>
+            <th>Variedad</th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
             <form action="{{ url_for('grape_reception.delete_reception', reception_id=r.id) }}" method="POST" style="display:inline;">
     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro que querés eliminar esta recepción?');">
         Eliminar
+        <td>{{ r.variety.name }}</td>
     </button>
 </form>
 </td>

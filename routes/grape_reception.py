@@ -19,7 +19,8 @@ def list_receptions():
 # ----------------------
 @grape_reception_bp.route("/add", methods=["GET"])
 def show_add_form():
-    return render_template("grape_reception/add_reception.html")
+    varieties = Variety.query.all()
+    return render_template("grape_reception/add_reception.html",varieties=varieties)
 
 # ----------------------
 # GUARDAR NUEVA RECEPCIÓN
@@ -33,6 +34,8 @@ def add_reception():
         quantity = int(request.form["quantity"])
         weight = float(request.form["weight"])
         reception_date = datetime.strptime(request.form["reception_date"], "%Y-%m-%d").date()
+        variety_id = request.form["variety_id"]
+
 
         # Crear objeto
         new_reception = GrapeReception(
@@ -41,6 +44,7 @@ def add_reception():
             quantity=quantity,
             weight=weight,
             reception_date=reception_date
+            variety_id=variety_id
         )
 
         db.session.add(new_reception)

@@ -26,5 +26,15 @@
         <input type="date" class="form-control" id="reception_date" name="reception_date" required>
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
+    <div class="mb-3">
+    <label for="variety_id" class="form-label">Variedad</label>
+    <select name="variety_id" class="form-select" required>
+        <option value="">Seleccionar variedad...</option>
+        {% for variety in varieties %}
+            <option value="{{ variety.id }}">{{ variety.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
 </form>
 {% endblock %}

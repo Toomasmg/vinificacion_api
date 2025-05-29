@@ -1,5 +1,6 @@
 import uuid
 from database import db
+from models.variety import Variety
 
 # Modelo que representa la recepción de la uva en la bodega
 class GrapeReception(db.Model):
@@ -22,6 +23,10 @@ class GrapeReception(db.Model):
 
     # Fecha en la que se recibió la uva (debe ser ingresada manualmente)
     reception_date = db.Column(db.Date, nullable=False)  # día de recepción
+    
+    #relacion con variety
+    variety_id = db.Column(db.String(36), db.ForeignKey("variety.id"), nullable=False)
+    variety = db.relationship("Variety", backref="receptions")
 
     # Representación como string
     def __repr__(self):
