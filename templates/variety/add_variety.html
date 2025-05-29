@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Agregar Variedad{% endblock %}
+
+{% block body %}
+<h2>Agregar Variedad de Uva</h2>
+<form method="POST" action="{{ url_for('variety.add_variety') }}">
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea name="description" class="form-control" rows="4"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
