@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Vinificación{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4 mb-4">Sistema de Gestión de Vinificación</h1>
+    <p class="lead mb-5">Bienvenido al sistema. Usá el menú para gestionar las variedades, la recepción y la fermentación.</p>
+
+    <a href="{{ url_for('variety.list_varieties') }}" class="btn btn-primary btn-lg m-2">Gestionar Variedades</a>
+    <a href="{{ url_for('reception.list_receptions') }}" class="btn btn-success btn-lg m-2">Recepciones de Uva</a>
+    <a href="{{ url_for('fermentation.list_fermentations') }}" class="btn btn-warning btn-lg m-2">Fermentación</a>
+</div>
+{% endblock %}

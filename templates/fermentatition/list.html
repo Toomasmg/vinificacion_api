@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Fermentaciones{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Listado de Fermentaciones</h2>
+
+<a href="{{ url_for('fermentations.new_fermentation') }}" class="btn btn-primary mb-3">Nueva Fermentación</a>
+
+<form method="GET" action="{{ url_for('fermentations.list_fermentations') }}" class="mb-3">
+    <input type="text" name="query" placeholder="Buscar por variedad..." class="form-control">
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Temperatura</th>
+            <th>Acidez</th>
+            <th>pH</th>
+            <th>Notas</th>
+            <th>Variedad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in fermentations %}
+        <tr>
+            <td>{{ f.start_date }}</td>
+            <td>{{ f.end_date or '-' }}</td>
+            <td>{{ f.temperature }}°C</td>
+            <td>{{ f.acidity }}</td>
+            <td>{{ f.ph }}</td>
+            <td>{{ f.notes }}</td>
+            <td>{{ f.variety.name }}</td>
+            <td>
+                <a href="{{ url_for('fermentations.edit_fermentation', id=f.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{{ url_for('fermentations.delete_fermentation', id=f.id) }}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listado de Variedades</title>
+</head>
+<body>
+    <h1>Variedades de Uva</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <a href="{{ url_for('variety.show_add_variety') }}">Agregar Nueva Variedad</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for variety in varieties %}
+            <tr>
+                <td>{{ variety.name }}</td>
+                <td>{{ variety.description }}</td>
+                <td>
+                    <a href="{{ url_for('variety.edit_variety_form', variety_id=variety.id) }}">Editar</a>
+                    <form action="{{ url_for('variety.delete_variety', variety_id=variety.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('¿Estás seguro de que querés eliminar esta variedad?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!-- templates/variety/edit_variety.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Variedad</title>
+</head>
+<body>
+    <h1>Editar Variedad</h1>
+
+    <form action="{{ url_for('variety.edit_variety', variety_id=variety.id) }}" method="POST">
+        <label>Nombre:</label><br>
+        <input type="text" name="name" value="{{ variety.name }}" required><br><br>
+
+        <label>Descripción:</label><br>
+        <textarea name="description" required>{{ variety.description }}</textarea><br><br>
+
+        <button type="submit">Actualizar</button>
+        <a href="{{ url_for('variety.list_varieties') }}">Cancelar</a>
+    </form>
+</body>
+</html>
