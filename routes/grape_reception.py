@@ -43,7 +43,7 @@ def add_reception():
             grape_type=grape_type,
             quantity=quantity,
             weight=weight,
-            reception_date=reception_date
+            reception_date=reception_date,
             variety_id=variety_id
         )
 
