@@ -2,21 +2,39 @@
 {% block title %}Editar Embotellado{% endblock %}
 
 {% block body %}
-<h3>Editar Embotellado</h3>
-<form method="POST">
-    <div class="mb-3">
-        <label for="bottling_code" class="form-label">Código de Botella</label>
-        <input type="text" name="bottling_code" class="form-control" value="{{bottling.bottling_code}}" required>
-    </div>
-    <div class="mb-3">
-        <label for="aging_id" class="form-label">ID de Crianza</label>
-        <input type="text" name="aging_id" class="form-control"  value="{{bottling.aging_id}}"  required>
-    </div>
-    <div class="mb-3">
-        <label for="date_bottling" class="form-label">Fecha de Embotellado</label>
-        <input type="date" name="date_bottling" class="form-control" value="{{bottling.date_bottling}}">
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-    <a href="{{ url_for('bottling_bp.get_bottling')}}" class="btn btn-secondary">Cancelar</a>
-</form>
+<h3 class="text-center my4">Editar Embotellado</h3>
+<div class="d-flex justify-content-center">
+    <form  action="{{url_for('bottling_bp.edit_bottling', id=bottling.id)}}" method="POST">
+        <div class="mb-3 fst-italic">
+            <label for="date_bottling" class="form-label">Fecha de Embotellado</label>
+            <input type="date" name="date_bottling" class="form-control" value="{{bottling.date_bottling}}">
+        </div>
+        <div class="mb-3 fst-italic">
+            <label for="total_volume" class="form-label">Volumen</label>
+            <input type="number" name="total_volume" step="0.001" min="0" class="form-control" value="{{bottling.total_volume}}">
+        </div>
+        <div class="mb-3 fst-italic">
+            <label for="bottle_type" class="form-label">Tipo de bottella</label>
+            <input type="number" min="0" name="bottle_type" class="form-control" value="{{bottling.bottle_type}}">
+        </div>
+        <div class="mb-3 fst-italic">
+            <label for="bottle_quantity" class="form-label">Cantidad total</label>
+            <input type="number" min="0" name="bottle_quantity" class="form-control" value="{{bottling.bottle_quantity}}">
+        </div>
+        <div class="mb-3 fst-italic">
+            <label for="lot_number" class="form-label">Lote asociado</label>
+            <input type="text" name="lot_number" class="form-control" value="{{bottling.lot_number}}">
+        </div>
+        <div class="mb-3 fst-italic">
+            <label for="observation" class="form-label">Observacion</label>
+            <textarea name="observation" class="form-control" value="{{bottling.observation}}"></textarea>
+        </div>
+        <div class="mb-3 fst-italic">
+            <label for="aging_id" class="form-label">ID de Crianza</label>
+            <input type="text" name="aging_id" class="form-control"  value="{{bottling.aging_id}}"  required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{{ url_for('bottling_bp.get_bottling')}}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
 {% endblock%}

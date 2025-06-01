@@ -15,14 +15,16 @@ def get_bottling():
 @bottling_bp.route("/bottling", methods=["POST"])
 def add_bottling():
     date_bottling = request.form["date_bottling"] #recibimos lo que ingresa en formato form(formulario del html)
-    bottling_code = request.form["bottling_code"]
-    date_bottling = request.form["date_bottling"]
+    total_volume= request.form["total_volume"]
+    bottle_type = request.form["bottle_type"]
+    bottle_quantity = request.form["bottle_quantity"]
+    lot_number = request.form["lot_number"]
+    observation = request.form.get("observation","")
     aging_id = request.form["aging_id"]
-
     if aging_id.strip() == "":
         aging_id = None
 
-    if not aging_id or not bottling_code:
+    if not aging_id or not total_volume:
         flash("EL ID de crianza y el codigo son obligatorios","error")
     try:
         if date_bottling:
@@ -32,9 +34,14 @@ def add_bottling():
         
         new_bottling=Bottling(
             id = str(uuid.uuid4()),
-            aging_id = aging_id,
             date_bottling = date_bottling,
-            bottling_code = bottling_code
+            total_volume = total_volume,
+            bottle_type= bottle_type,
+            bottle_quantity = bottle_quantity,
+            lot_number = lot_number,
+            observation = observation,
+            aging_id = aging_id,
+
         )
         db.session.add(new_bottling)
         db.session.commit()
@@ -49,13 +56,17 @@ def add_bottling():
 @bottling_bp.route("/bottling/edit/<string:id>",methods =["GET","POST"])
 def edit_bottling(id):
     bottling = Bottling.query.get_or_404(id)
-    if request.method == "POST":
-        aging_id = request.form.get("aging_id")#verificamos si existe los atributos
+    if request.method == "POST":#verificamos si existe los atributos
         date_bottling = request.form.get("date_bottling" )
-        bottling_code = request.form.get("bottling_code")
+        total_volume= request.form.get("total_volume")
+        bottle_type = request.form.get("bottle_type")
+        bottle_quantity = request.form.get("bottle_quantity")
+        lot_number = request.form.get("lot_number")
+        observation= request.form.get("observation","")
+        aging_id = request.form.get("aging_id")
 
-        if not aging_id or not bottling_code:
-            flash("EL ID de crianza y el codigo son obligatorios","error")
+        if not aging_id or not lot_number:
+            flash("EL ID de crianza y el numero del lote son obligatorios","error")
             return redirect(request.referrer)#volvemos para atras 
         
         try:
@@ -65,10 +76,15 @@ def edit_bottling(id):
                 date_bottling = datetime.today().date()#si no ingreso la fecha que se añada la de hoy
             bottling.aging_id = aging_id
             bottling.date_bottling = date_bottling
-            bottling.bottling_code = bottling_code
+            bottling.total_volume = total_volume
+            bottling.bottle_type= bottle_type
+            bottling.bottle_quantity = bottle_quantity
+            bottling.lot_number = lot_number
+            bottling.observation = observation
+            bottling.aging_id = aging_id
             db.session.commit()
             flash("Botellado actualizado correctamente","success")
-            return redirect(url_for("bottling_bp.bottlings"))
+            return redirect(url_for("bottling_bp.get_bottling"))
         
         except Exception as e:
             db.session.rollback()
