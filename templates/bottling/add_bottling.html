@@ -8,11 +8,16 @@ action="{{ url_for('bottling_bp.add_bottling') }}">
     </div>
     <div class="mb-3 fst-italic">
         <label for="total_volume" class="form-label">Volumen</label>
-        <input type="number" step="0.001" min="0" name="total_volume" class="form-control" required>
+        <input type="number" step="0.001" min="1000" placeholder="Volumen en Litros"   name="total_volume" class="form-control" required>
     </div>
     <div class="mb-3 fst-italic">
         <label for="bottle_type" class="form-label">Tipo de bottella</label>
-        <input type="number" min="0" name="bottle_type" class="form-control" required>
+        <select class="form-control" name="bottle_type">
+            <option value="vidrio">Vidrio</option>
+            <option value="plastico">Plastico</option>
+        </select>
+        <label for="capacity_ml" class="form-label">Capacidad en ml</label><br>
+        <input type="number" min="750" name="capacity_ml" placeholder="min 750 ml"  step="0.01" required>
     </div>
     <div class="mb-3 fst-italic">
         <label for="bottle_quantity" class="form-label">Cantidad total</label>
