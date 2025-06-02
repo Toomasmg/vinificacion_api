@@ -16,16 +16,38 @@ def get_bottling():
 def add_bottling():
     date_bottling = request.form["date_bottling"] #recibimos lo que ingresa en formato form(formulario del html)
     total_volume= request.form["total_volume"]
-    bottle_type = request.form["bottle_type"]
     bottle_quantity = request.form["bottle_quantity"]
     lot_number = request.form["lot_number"]
     observation = request.form.get("observation","")
+
+    bottle_type = request.form.get("bottle_type")
+    capacity_ml = request.form["capacity_ml"]
+
     aging_id = request.form["aging_id"]
     if aging_id.strip() == "":
         aging_id = None
+    
+    if Bottling.query.filter_by(lot_number=lot_number).first():
+        flash("El numero del lote ya se encuentra registrado","warning")
+        return redirect(request.referrer)
+    #------calcular podsibles errores de datos
+    user_volume = float(total_volume)
+    # Capacidad de botella en litros
+    bottle_capacity_liter = float(capacity_ml) / 1000  
 
-    if not aging_id or not total_volume:
-        flash("EL ID de crianza y el codigo son obligatorios","error")
+    estimated_volume = int(bottle_quantity) * bottle_capacity_liter  #Estimamos el volumen total a partir de cantidad de botellas
+
+    # Comparamos
+    difference = abs(user_volume - estimated_volume)
+    #botellas requeridas
+    required_bottles = round(user_volume / bottle_capacity_liter)
+    if difference > 5:#botellas o litros perdidos
+        flash(f"El volumen total difiere mucho del calculado. Revisá los datos. "
+        f"Con {user_volume} L y botellas de {capacity_ml} ml, deberías tener unas {required_bottles} botellas aprox.",
+        "warning")
+        return redirect(request.referrer)
+    if difference > 1:#perdida leve
+        flash("Tienes una perdida leve","info")
     try:
         if date_bottling:
             date_bottling = datetime.strptime(date_bottling,"%Y-%m-%d").date()
@@ -37,6 +59,7 @@ def add_bottling():
             date_bottling = date_bottling,
             total_volume = total_volume,
             bottle_type= bottle_type,
+            capacity_ml = capacity_ml,
             bottle_quantity = bottle_quantity,
             lot_number = lot_number,
             observation = observation,
@@ -59,16 +82,30 @@ def edit_bottling(id):
     if request.method == "POST":#verificamos si existe los atributos
         date_bottling = request.form.get("date_bottling" )
         total_volume= request.form.get("total_volume")
-        bottle_type = request.form.get("bottle_type")
         bottle_quantity = request.form.get("bottle_quantity")
         lot_number = request.form.get("lot_number")
         observation= request.form.get("observation","")
+        bottle_type = request.form.get("bottle_type")
+        capacity_ml = request.form.get("capacity_ml")
         aging_id = request.form.get("aging_id")
 
-        if not aging_id or not lot_number:
-            flash("EL ID de crianza y el numero del lote son obligatorios","error")
-            return redirect(request.referrer)#volvemos para atras 
-        
+        user_volume = float(total_volume)
+        # Capacidad de botella en litros
+        bottle_capacity_liter = float(capacity_ml) / 1000  
+
+        estimated_volume = int(bottle_quantity) * bottle_capacity_liter  #Estimamos el volumen total a partir de cantidad de botellas
+
+        # Comparamos
+        difference = abs(user_volume - estimated_volume)
+        #botellas requeridas
+        required_bottles = round(user_volume / bottle_capacity_liter)
+        if difference > 5:#botellas o litros perdidos
+            flash(f" El volumen total difiere mucho del calculado. Revisá los datos. "
+            f"Con {user_volume} L y botellas de {capacity_ml} ml, deberías tener unas {required_bottles} botellas aprox.",
+            "warning")
+            return redirect(request.referrer)
+        if difference > 1:#perdida leve
+            flash("Tienes una perdida leve","info")
         try:
             if date_bottling:
                 date_bottling = datetime.strptime(date_bottling,"%Y-%m-%d").date()#transformamos la fecha en fromato date
@@ -77,10 +114,11 @@ def edit_bottling(id):
             bottling.aging_id = aging_id
             bottling.date_bottling = date_bottling
             bottling.total_volume = total_volume
-            bottling.bottle_type= bottle_type
             bottling.bottle_quantity = bottle_quantity
             bottling.lot_number = lot_number
             bottling.observation = observation
+            bottling.bottle_type= bottle_type
+            bottling.capacity_ml =  capacity_ml
             bottling.aging_id = aging_id
             db.session.commit()
             flash("Botellado actualizado correctamente","success")

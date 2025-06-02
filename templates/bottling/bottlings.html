@@ -26,7 +26,9 @@
                 <tr>
                     <td>{{ b.date_bottling}}</td>
                     <td>{{ b.total_volume }}</td>
-                    <td>{{ b.bottle_type}}</td>
+                    <td > 
+                        {{b.bottle_type}}-{{b.capacity_ml}}ml
+                    </td>
                     <td>{{b.bottle_quantity}}</td>
                     <td>{{b.lot_number}}</td>
                     <td>{{b.observation}}</td>
