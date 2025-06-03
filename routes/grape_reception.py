@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, abort
-from models.database import db
+from models.db import db
 from models.grape_reception import GrapeReception
 from models.variety import Variety
 from datetime import datetime
@@ -21,7 +21,7 @@ def list_receptions():
 @grape_reception_bp.route("/add", methods=["GET"])
 def show_add_form():
     varieties = Variety.query.all()
-    return render_template("grape_reception/add_reception.html", varieties=varieties)
+    return render_template("grape_reception/add_reception.html",varieties=varieties)
 
 # ----------------------
 # GUARDAR NUEVA RECEPCIÓN
@@ -29,6 +29,7 @@ def show_add_form():
 @grape_reception_bp.route("/add", methods=["POST"])
 def add_reception():
     try:
+        # Tomar los datos del formulario
         name = request.form["name"]
         grape_type = request.form["grape_type"]
         quantity = int(request.form["quantity"])
@@ -36,6 +37,8 @@ def add_reception():
         reception_date = datetime.strptime(request.form["reception_date"], "%Y-%m-%d").date()
         variety_id = request.form["variety_id"]
 
+
+        # Crear objeto
         new_reception = GrapeReception(
             name=name,
             grape_type=grape_type,
@@ -64,8 +67,7 @@ def edit_reception_form(reception_id):
     reception = GrapeReception.query.get(reception_id)
     if reception is None:
         abort(404)
-    varieties = Variety.query.all()
-    return render_template("grape_reception/edit_reception.html", reception=reception, varieties=varieties)
+    return render_template("grape_reception/edit_reception.html", reception=reception)
 
 # ----------------------
 # ACTUALIZAR RECEPCIÓN
@@ -82,7 +84,6 @@ def edit_reception(reception_id):
         reception.quantity = int(request.form["quantity"])
         reception.weight = float(request.form["weight"])
         reception.reception_date = datetime.strptime(request.form["reception_date"], "%Y-%m-%d").date()
-        reception.variety_id = request.form["variety_id"]  # ← Relación actualizada
 
         db.session.commit()
         flash("Recepción actualizada con éxito", "success")

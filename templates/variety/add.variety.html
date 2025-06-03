@@ -1,21 +1,19 @@
-<!-- templates/variety/add_variety.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Agregar Variedad</title>
-</head>
-<body>
-    <h1>Agregar Nueva Variedad</h1>
+{% extends "layout.html" %}
 
-    <form action="{{ url_for('variety.add_variety') }}" method="POST">
-        <label>Nombre:</label><br>
-        <input type="text" name="name" required><br><br>
+{% block title %}Agregar Variedad{% endblock %}
 
-        <label>Descripción:</label><br>
-        <textarea name="description" required></textarea><br><br>
+{% block body %}
+<h2 class="mb-4">Agregar Variedad de Uva</h2>
+<form method="POST" action="{{ url_for('variety.add_variety') }}" class="card p-4 shadow-sm bg-white">
+    <div class="mb-3">
+        <label for="name" class="form-label">Nombre</label>
+        <input type="text" name="name" class="form-control" placeholder="Ej: Malbec" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea name="description" class="form-control" rows="4" placeholder="Notas, región, características..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
 
-        <button type="submit">Guardar</button>
-        <a href="{{ url_for('variety.list_varieties') }}">Cancelar</a>
-    </form>
-</body>
-</html>

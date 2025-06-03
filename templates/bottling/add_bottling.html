@@ -1,0 +1,39 @@
+<form 
+method="Post" 
+action="{{ url_for('bottling_bp.add_bottling') }}">
+
+    <div class="mb-4 fst-italic" >
+        <label for="date_bottling" class="form-label">Fecha de Embotellado</label>
+        <input type="date" name="date_bottling" class="form-control">
+    </div>
+    <div class="mb-3 fst-italic">
+        <label for="total_volume" class="form-label">Volumen</label>
+        <input type="number" step="0.001" min="1000" placeholder="Volumen en Litros"   name="total_volume" class="form-control" required>
+    </div>
+    <div class="mb-3 fst-italic">
+        <label for="bottle_type" class="form-label">Tipo de bottella</label>
+        <select class="form-control" name="bottle_type">
+            <option value="vidrio">Vidrio</option>
+            <option value="plastico">Plastico</option>
+        </select>
+        <label for="capacity_ml" class="form-label">Capacidad en ml</label><br>
+        <input type="number" min="750" name="capacity_ml" placeholder="min 750"  step="0.01" required>
+    </div>
+    <div class="mb-3 fst-italic">
+        <label for="bottle_quantity" class="form-label">Cantidad total</label>
+        <input type="number" min="0" name="bottle_quantity" class="form-control" required>
+    </div>
+    <div class="mb-3 fst-italic">
+        <label for="lot_number" class="form-label">Lote asociado</label required>
+        <input type="text" name="lot_number" class="form-control">
+    </div>
+    <div class="mb-3 fst-italic">
+        <label for="observation" class="form-label">Observacion</label>
+        <textarea name="observation" class="form-control"></textarea>
+    </div>
+    <div class="mb-3 fst-italic">
+        <label for="aging_id" class="form-label">ID crianza</label>
+        <input type="text" name="aging_id" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>

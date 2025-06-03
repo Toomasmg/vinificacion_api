@@ -1,5 +1,5 @@
 import uuid
-from models.database import db
+from models.db import db
 
 class Fermentation(db.Model):
     __tablename__ = "fermentations"
@@ -11,8 +11,6 @@ class Fermentation(db.Model):
     acidity = db.Column(db.Float, nullable=True)
     ph = db.Column(db.Float, nullable=True)
     notes = db.Column(db.String(500), nullable=True)
-
-    variety_id = db.Column(db.String(36), db.ForeignKey("variety.id"), nullable=False)
 
     def serialize(self):
         return {

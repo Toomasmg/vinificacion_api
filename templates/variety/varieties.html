@@ -1,43 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Listado de Variedades</title>
-</head>
-<body>
-    <h1>Variedades de Uva</h1>
+{% extends "layout.html" %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash {{ category }}">{{ message }}</div>
+{% block title %}Lista de Variedades{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Variedades Registradas</h2>
+    <a href="{{ url_for('variety.show_add_variety') }}" class="btn btn-success">+ Nueva Variedad</a>
+    <a href="{{url_for('grape_reception.list_receptions')}}" class="btn btn-success">siguiente etapa</a>
+</div>
+
+{% if varieties %}
+<table class="table table-bordered table-hover bg-white">
+    <thead class="table-dark">
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th style="width: 100px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for v in varieties %}
+        <tr>
+            <td>{{ v.name }}</td>
+            <td>{{ v.description }}</td>
+            <td>
+                <form action="{{ url_for('variety.delete_variety', variety_id=v.id) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta variedad?');">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
         {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <a href="{{ url_for('variety.show_add_variety') }}">Agregar Nueva Variedad</a>
-
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for variety in varieties %}
-            <tr>
-                <td>{{ variety.name }}</td>
-                <td>{{ variety.description }}</td>
-                <td>
-                    <a href="{{ url_for('variety.edit_variety_form', variety_id=variety.id) }}">Editar</a>
-                    <form action="{{ url_for('variety.delete_variety', variety_id=variety.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" onclick="return confirm('¿Estás seguro de que querés eliminar esta variedad?')">Eliminar</button>
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">No hay variedades registradas aún.</div>
+{% endif %}
+{% endblock %}

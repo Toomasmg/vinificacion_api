@@ -1,50 +1,37 @@
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from models.database import db
-from routes.grapes_receptions import grape_reception_bp
-from routes.varieties import variety_bp
+from flask import Flask,redirect,url_for,render_template
+from config.config import DATABASE_CONECTION_URI
+from models.db import db
+from routes.variety import variety_bp
+from routes.grape_reception import grape_reception_bp
 from routes.fermentations import fermentations_bp
-from models.variety import Variety
-from models.grape_reception import GrapeReception
-from models.fermentation import Fermentation
-from dotenv import load_dotenv
-import os
+from routes.bottlings import bottling_bp
+from sqlalchemy import text
+app = Flask(__name__)
+app.register_blueprint(variety_bp)
+app.register_blueprint(grape_reception_bp)
+app.register_blueprint(fermentations_bp)
+app.register_blueprint(bottling_bp)
 
-load_dotenv()
+app.secret_key = "SECRET_KEY"
+app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_CONECTION_URI
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DATABASE')}"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = "vinificacion-secreta"
-
-    db.init_app(app)
-    Migrate(app, db)
-
-    # Blueprints
-    app.register_blueprint(grape_reception_bp)
-    app.register_blueprint(variety_bp)
-    app.register_blueprint(fermentations_bp)
-
-    # Página de inicio
-    @app.route('/')
-    def index():
-        return render_template('index.html')
-
-    # Vista general con todos los datos
-    @app.route('/dashboard')
-    def dashboard():
-        varieties = Variety.query.all()
-        receptions = GrapeReception.query.all()
-        fermentations = Fermentation.query.all()
-        return render_template("dashboard.html", varieties=varieties, receptions=receptions, fermentations=fermentations)
-
-    return app
+db.init_app(app)
+@app.route("/")
+def index():
+    return render_template("index.html")
+# for rule in app.url_map.iter_rules():
+    # print(rule.endpoint, rule)
+with app.app_context():
+    from models.variety import Variety
+    from models.grape_reception import GrapeReception
+    from models.fermentation import Fermentation
+    from models.bottling import Bottling
+    from models.aging import Aging
+    db.session.execute(text("SET FOREIGN_KEY_CHECKS=0;"))
+    db.drop_all()
+    db.session.execute(text("SET FOREIGN_KEY_CHECKS=1;"))
+    db.create_all()
 
 if __name__ == "__main__":
-    app = create_app()
-    with app.app_context():
-        db.create_all()
-        
     app.run(debug=True)

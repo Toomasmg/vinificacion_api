@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.fermentation import Fermentation
-from models.variety import Variety
-from models.database import db
+from models.db import db
 from datetime import datetime
 
 fermentations_bp = Blueprint("fermentations", __name__)
@@ -9,8 +8,8 @@ fermentations_bp = Blueprint("fermentations", __name__)
 # Listar todas las fermentaciones
 @fermentations_bp.route("/fermentations")
 def list_fermentations():
-    varieties = Variety.query.all()
-    return render_template("fermentations/new.html", varieties=varieties)
+    fermentations = Fermentation.query.all()
+    return render_template("fermentations/list.html", fermentations=fermentations)
 
 # Mostrar formulario para crear nueva fermentación
 @fermentations_bp.route("/fermentations/new")
@@ -27,8 +26,7 @@ def create_fermentation():
             temperature=float(request.form["temperature"]),
             acidity=float(request.form["acidity"]),
             ph=float(request.form["ph"]),
-            notes=request.form["notes"],
-            variety_id=request.form["variety_id"]
+            notes=request.form["notes"]
         )
         db.session.add(fermentation)
         db.session.commit()
@@ -45,9 +43,7 @@ def edit_fermentation(id):
     if not fermentation:
         flash("Fermentación no encontrada", "warning")
         return redirect(url_for("fermentations.list_fermentations"))
-    
-    varieties = Variety.query.all()
-    return render_template("fermentations/edit.html", fermentation=fermentation, varieties=varieties)
+    return render_template("fermentations/edit.html", fermentation=fermentation)
 
 # Actualizar fermentación con datos del formulario de edición
 @fermentations_bp.route("/fermentations/update/<string:id>", methods=["POST"])
@@ -63,7 +59,6 @@ def update_fermentation(id):
         fermentation.acidity = float(request.form["acidity"])
         fermentation.ph = float(request.form["ph"])
         fermentation.notes = request.form["notes"]
-        fermentation.variety_id = request.form["variety_id"]
 
         db.session.commit()
         flash("Fermentación actualizada", "success")
