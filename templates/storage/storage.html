@@ -4,7 +4,13 @@
 <h3>Nuevo Almacenamiento</h3>
 <form action="/storage" method="POST" class="bg-white p-4 rounded shadow-sm mb-4">
     <input class="form-control mb-2" name="wine_name" placeholder="Nombre del vino" required>
-    <input class="form-control mb-2" name="grape_variety_id" placeholder="ID de uva" required>
+
+    <select name="grape_variety_id" class="form-select mb-2" required>
+      {% for v in grape_varieties %}
+        <option value="{{ v.id }}">{{ v.name }}</option>
+      {% endfor %}
+    </select>
+
     <input class="form-control mb-2" name="container_type" placeholder="Tipo de contenedor" required>
     <input class="form-control mb-2" type="number" step="0.01" name="quantity_liters" placeholder="Litros" required>
     <input class="form-control mb-2" name="location" placeholder="Ubicación">
@@ -18,7 +24,7 @@
         {% for s in storages %}
         <tr>
             <td>{{ s.wine_name }}</td>
-            <td>{{ s.grape_variety_id }}</td>
+            <td>{{ s.grape_variety.name }}</td>
             <td>{{ s.container_type }}</td>
             <td>{{ s.quantity_liters }}</td>
             <td>{{ s.location }}</td>

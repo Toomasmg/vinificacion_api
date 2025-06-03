@@ -1,5 +1,6 @@
 from models.db import db
 import uuid
+from models.variety import Variety
 from datetime import date
 class Storage(db.Model):
     __tablename__ = 'storages'
@@ -7,9 +8,8 @@ class Storage(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     wine_name = db.Column(db.String(100), nullable=False)
 
-    # Comentamos la relación real con GrapeVariety (por testeo)
-    grape_variety_id = db.Column(db.String(36), nullable=False)
-    # grape_variety = db.relationship("GrapeVariety", backref="storages")  # original
+    grape_variety_id = db.Column(db.String(36), db.ForeignKey('variety.id'), nullable=False)
+    grape_variety = db.relationship("Variety", backref="storages")
 
     container_type = db.Column(db.String(50), nullable=False)
     quantity_liters = db.Column(db.Float, nullable=False)

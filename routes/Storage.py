@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.storage import Storage
+from models.variety import Variety
 from models.db import db
 
 storage_bp = Blueprint('storage_bp', __name__)
@@ -7,7 +8,8 @@ storage_bp = Blueprint('storage_bp', __name__)
 @storage_bp.route('/storage', methods=['GET'])
 def view_storages():
     storages = Storage.query.all()
-    return render_template('storage/storage.html', storages=storages)
+    grape_varieties = Variety.query.all()
+    return render_template('storage/storage.html', storages=storages, grape_varieties=grape_varieties)
 
 @storage_bp.route('/storage', methods=['POST'])
 def create_storage():
@@ -26,7 +28,8 @@ def create_storage():
 @storage_bp.route('/storage/editar/<string:id>', methods=['GET'])
 def edit_storage(id):
     storage = Storage.query.get_or_404(id)
-    return render_template('storage/edit_storage.html', storage=storage)
+    grape_varieties = Variety.query.all()
+    return render_template('storage/edit_storage.html', storage=storage, grape_varieties=grape_varieties)
 
 @storage_bp.route('/storage/editar/<string:id>', methods=['POST'])
 def update_storage(id):

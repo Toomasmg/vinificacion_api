@@ -1,5 +1,6 @@
 from models.db import db
 import uuid
+from models.variety import Variety
 from datetime import date
 
 class Aging(db.Model):
@@ -7,9 +8,8 @@ class Aging(db.Model):
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     
-    # Comentamos la relación real con GrapeVariety (por testeo)
-    grape_variety_id = db.Column(db.String(36), nullable=False)
-    # grape_variety = db.relationship("GrapeVariety", backref="agings")  # original
+    grape_variety_id = db.Column(db.String(36), db.ForeignKey('variety.id'), nullable=False)
+    grape_variety = db.relationship("Variety", backref="agings")
 
     barrel_type = db.Column(db.String(50), nullable=False)
     start_date = db.Column(db.Date, nullable=False)

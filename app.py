@@ -22,7 +22,8 @@ def index():
 with app.app_context():
     from models.Aging import Aging
     from models.storage import Storage
-    from models.grape_variety import GrapeVariety
+    from models.variety import Variety
+
     db.create_all()
 
 if __name__ == '__main__':
