@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}Crianzas{% endblock %}
+{% block body %}
+<h3>Nueva Crianza</h3>
+<form action="/aging" method="POST" class="bg-white p-4 rounded shadow-sm mb-4">
+    <input class="form-control mb-2" name="grape_variety_id" placeholder="ID de uva" required>
+    <input class="form-control mb-2" name="barrel_type" placeholder="Tipo de barrica" required>
+    <input class="form-control mb-2" type="date" name="start_date" required>
+    <input class="form-control mb-2" type="date" name="end_date">
+    <button class="btn btn-success">Guardar</button>
+</form>
+
+<h4>Lista de crianzas</h4>
+<table class="table table-bordered">
+    <thead><tr><th>Uva</th><th>Barrica</th><th>Inicio</th><th>Fin</th><th>Acciones</th></tr></thead>
+    <tbody>
+        {% for a in agings %}
+        <tr>
+            <td>{{ a.grape_variety_id }}</td>
+            <td>{{ a.barrel_type }}</td>
+            <td>{{ a.start_date }}</td>
+            <td>{{ a.end_date }}</td>
+            <td>
+                <a href="/aging/editar/{{ a.id }}" class="btn btn-warning btn-sm">Editar</a>
+                <form method="POST" action="/aging/eliminar/{{ a.id }}" style="display:inline-block;" onsubmit="return confirm('¿Eliminar?')">
+                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

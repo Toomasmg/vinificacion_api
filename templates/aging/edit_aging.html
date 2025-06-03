@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Editar Crianza{% endblock %}
+
+{% block body %}
+<h3 class="my-4">Editar Crianza</h3>
+<div class="card p-4 shadow-sm">
+    <form action="/aging/editar/{{ aging.id }}" method="POST">
+        <div class="mb-3">
+            <label class="form-label">ID de Variedad de Uva</label>
+            <input type="text" name="grape_variety_id" class="form-control" value="{{ aging.grape_variety_id }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Tipo de Barrica</label>
+            <input type="text" name="barrel_type" class="form-control" value="{{ aging.barrel_type }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Fecha de Inicio</label>
+            <input type="date" name="start_date" class="form-control" value="{{ aging.start_date }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Fecha de Fin</label>
+            <input type="date" name="end_date" class="form-control" value="{{ aging.end_date }}">
+        </div>
+        <div class="d-flex justify-content-between">
+            <a href="/aging" class="btn btn-secondary">Volver</a>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
