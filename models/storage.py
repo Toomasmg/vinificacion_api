@@ -4,7 +4,7 @@ from models.variety import Variety
 from datetime import date
 class Storage(db.Model):
     __tablename__ = 'storages'
-
+#RELACION CON VARIEDAD DE UVA
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     wine_name = db.Column(db.String(100), nullable=False)
 
