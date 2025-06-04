@@ -2,44 +2,48 @@
 {% block title %}Fermentaciones{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
+<div class="container-fluid px-3">
     <h2>Fermentaciones registradas</h2>
-    <a href="{{ url_for('fermentations.new_fermentation') }}" class="btn btn-success mb-3">Nueva Fermentación</a>
-
+    <div class="d-flex flex-column flex-sm-row gap-2"></div>
+        <a href="{{ url_for('fermentations.new_fermentation') }}" class="btn btn-success mb-3">Nueva Fermentación</a>
+        <a href="{{url_for('aging_bp.view_agings')}}" class="btn btn-success">siguiente etapa</a>
+    </div>
     {% if fermentations %}
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th>Temp.</th>
-                <th>Acidez</th>
-                <th>pH</th>
-                <th>Notas</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for f in fermentations %}
-            <tr>
-                <td>{{ f.id[:8] }}...</td>
-                <td>{{ f.start_date }}</td>
-                <td>{{ f.end_date or "-" }}</td>
-                <td>{{ f.temperature }}</td>
-                <td>{{ f.acidity }}</td>
-                <td>{{ f.ph }}</td>
-                <td>{{ f.notes }}</td>
-                <td>
-                    <a href="{{ url_for('fermentations.edit_fermentation', id=f.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="{{ url_for('fermentations.delete_fermentation', id=f.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta fermentación?')">Eliminar</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-        <p>No hay fermentaciones registradas.</p>
-    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Temp.</th>
+                    <th>Acidez</th>
+                    <th>pH</th>
+                    <th>Notas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in fermentations %}
+                <tr>
+                    <td>{{ f.id[:8] }}...</td>
+                    <td>{{ f.start_date }}</td>
+                    <td>{{ f.end_date or "-" }}</td>
+                    <td>{{ f.temperature }}</td>
+                    <td>{{ f.acidity }}</td>
+                    <td>{{ f.ph }}</td>
+                    <td>{{ f.notes }}</td>
+                    <td>
+                        <a href="{{ url_for('fermentations.edit_fermentation', id=f.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{{ url_for('fermentations.delete_fermentation', id=f.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar esta fermentación?')">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No hay fermentaciones registradas.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

@@ -3,44 +3,47 @@
 {% block title %}Recepciones de Uva{% endblock %}
 
 {% block body %}
-<h2 class="mb-4">Recepciones registradas</h2>
-
-<a href="{{ url_for('grape_reception.show_add_form') }}" class="btn btn-success mb-3">+ Nueva Recepción</a>
-
-{% if receptions %}
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Tipo de Uva</th>
-            <th>Cantidad</th>
-            <th>Peso (kg)</th>
-            <th>Fecha de Recepción</th>
-            <th>acciones</th>
-            <th>Variedad</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for r in receptions %}
-        <tr>
-            <td>{{ r.name }}</td>
-            <td>{{ r.grape_type }}</td>
-            <td>{{ r.quantity }}</td>
-            <td>{{ r.weight }}</td>
-            <td>{{ r.reception_date }}</td>
-            <td><a href="{{ url_for('grape_reception.edit_reception_form', reception_id=r.id) }}" class="btn btn-sm btn-warning">Editar</a>
-            <form action="{{ url_for('grape_reception.delete_reception', reception_id=r.id) }}" method="POST" style="display:inline;">
-    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro que querés eliminar esta recepción?');">
-        Eliminar
-        <td>{{ r.variety.name }}</td>
-    </button>
-</form>
-</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p class="text-muted">No hay recepciones registradas aún.</p>
-{% endif %}
+<div class="container-fluid px-4"></div>
+    <h2 class="mb-4">Recepciones registradas</h2>
+    <div class="d-flex flex-column flex-sm-row gap-2">
+    <a href="{{ url_for('grape_reception.show_add_form') }}" class="btn btn-success mb-3">+ Nueva Recepción</a>
+    <a href="{{url_for('fermentations.list_fermentations')}}" class="btn btn-success mb-3">Siguente etapa</a>
+    </div>
+    {% if receptions %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo de Uva</th>
+                <th>Cantidad</th>
+                <th>Peso (kg)</th>
+                <th>Fecha de Recepción</th>
+                <th>acciones</th>
+                <th>Variedad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in receptions %}
+            <tr>
+                <td>{{ r.name }}</td>
+                <td>{{ r.grape_type }}</td>
+                <td>{{ r.quantity }}</td>
+                <td>{{ r.weight }}</td>
+                <td>{{ r.reception_date }}</td>
+                <td><a href="{{ url_for('grape_reception.edit_reception_form', reception_id=r.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form action="{{ url_for('grape_reception.delete_reception', reception_id=r.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro que querés eliminar esta recepción?');">
+            Eliminar
+            <td>{{ r.variety.name }}</td>
+        </button>
+    </form>
+    </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted">No hay recepciones registradas aún.</p>
+    {% endif %}
+</div>
 {% endblock %}

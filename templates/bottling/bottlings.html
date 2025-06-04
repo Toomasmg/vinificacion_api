@@ -1,49 +1,52 @@
 {% extends "layout.html" %}
 {% block title %} Lista de embotellados {% endblock %}
 {% block body %}
-<div class="row">
-    <div class="col-md-5 p-4">
-        <h4>Nuevo Embotellado </h4>
-        {% include "bottling/add_bottling.html" %}
-    </div>
-    <div class="col-md-7 p-4">
-        <h4 class="fst-italic">Lista de Embotellados</h4>
-        <table class="table table-bordered table-hover">
-            <thead class="table-info fst-italic">
-                <tr>
-                    <th>fecha de embotellado</th>
-                    <th>Volumen</th>
-                    <th>Tipo de botella</th>
-                    <th>Cantidad total</th>
-                    <th>Lote</th>
-                    <th>Observacion</th>
-                    <th>Crianza ID</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for b in bottling %}
-                <tr>
-                    <td>{{ b.date_bottling}}</td>
-                    <td>{{ b.total_volume }}</td>
-                    <td > 
-                        {{b.bottle_type}}-{{b.capacity_ml}}ml
-                    </td>
-                    <td>{{b.bottle_quantity}}</td>
-                    <td>{{b.lot_number}}</td>
-                    <td>{{b.observation}}</td>
-                    <td>{{b.aging_id}}</td>
-                    <td>
-                        <a href="{{ url_for('bottling_bp.edit_bottling', id=b.id) }}" 
-                        class="btn btn-sm btn-warning">Editar</a>
-                        <form action="{{ url_for('bottling_bp.delete_bottling', id=b.id)}}" method="Post" style="display:inline-block;" onsubmit="return confirm('¿Seguro que queres eliminar este embotellado?')">
-                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="container-fluid px-4">
+    <div class="row">
+        <div class="col-md-5 p-4">
+            <h4>Nuevo Embotellado </h4>
+            {% include "bottling/add_bottling.html" %}
+        </div>
+        <div class="col-md-7 p-4">
+            <h4 class="fst-italic">Lista de Embotellados</h4>
+            <a href="{{url_for('index')}}" class="btn btn-success mb-3">Volver inicio</a>
+            <table class="table table-bordered table-hover">
+                <thead class="table-info fst-italic">
+                    <tr>
+                        <th>fecha de embotellado</th>
+                        <th>Volumen</th>
+                        <th>Tipo de botella</th>
+                        <th>Cantidad total</th>
+                        <th>Lote</th>
+                        <th>Observacion</th>
+                        <th>Crianza ID</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bottling %}
+                    <tr>
+                        <td>{{ b.date_bottling}}</td>
+                        <td>{{ b.total_volume }}</td>
+                        <td > 
+                            {{b.bottle_type}}-{{b.capacity_ml}}ml
+                        </td>
+                        <td>{{b.bottle_quantity}}</td>
+                        <td>{{b.lot_number}}</td>
+                        <td>{{b.observation}}</td>
+                        <td>{{b.aging_id}}</td>
+                        <td>
+                            <a href="{{ url_for('bottling_bp.edit_bottling', id=b.id) }}" 
+                            class="btn btn-sm btn-warning">Editar</a>
+                            <form action="{{ url_for('bottling_bp.delete_bottling', id=b.id)}}" method="Post" style="display:inline-block;" onsubmit="return confirm('¿Seguro que queres eliminar este embotellado?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

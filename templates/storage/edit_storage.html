@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Editar Almacenamiento{% endblock %}
+{% block body %}
+<h3>Editar Almacenamiento</h3>
+<form action="/storage/editar/{{ storage.id }}" method="POST" class="bg-white p-4 rounded shadow-sm mb-4">
+    <input type="text" name="wine_name" class="form-control mb-2" value="{{ storage.wine_name }}" required>
+
+    <select name="grape_variety_id" class="form-select mb-2" required>
+      {% for v in grape_varieties %}
+        <option value="{{ v.id }}" {% if v.id == storage.grape_variety_id %}selected{% endif %}>{{ v.name }}</option>
+      {% endfor %}
+    </select>
+
+    <input type="text" name="container_type" class="form-control mb-2" value="{{ storage.container_type }}" required>
+    <input type="number" step="0.01" name="quantity_liters" class="form-control mb-2" value="{{ storage.quantity_liters }}" required>
+    <input type="text" name="location" class="form-control mb-2" value="{{ storage.location }}">
+    <button class="btn btn-primary">Guardar Cambios</button>
+    <a href="/storage" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
