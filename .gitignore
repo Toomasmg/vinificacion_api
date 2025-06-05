@@ -1,2 +1,3 @@
-__pycache__
+flask-venv
 .env
+__pycache__
