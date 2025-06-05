@@ -4,9 +4,9 @@
 {% block body %}
 <div class="container-fluid px-3">
     <h2>Fermentaciones registradas</h2>
-    <div class="d-flex flex-column flex-sm-row gap-2"></div>
+    <div class="d-flex flex-column flex-sm-row gap-2">
         <a href="{{ url_for('fermentations.new_fermentation') }}" class="btn btn-success mb-3">Nueva Fermentación</a>
-        <a href="{{url_for('aging_bp.view_agings')}}" class="btn btn-success">siguiente etapa</a>
+        <a href="{{url_for('aging_bp.view_agings')}}" class="btn btn-success mb-3">siguiente etapa</a>
     </div>
     {% if fermentations %}
     <div class="table-responsive">

@@ -9,7 +9,7 @@ class Storage(db.Model):
     wine_name = db.Column(db.String(100), nullable=False)
 
     grape_variety_id = db.Column(db.String(36), db.ForeignKey('variety.id'), nullable=False)
-    grape_variety = db.relationship("Variety", backref="storages",cascade='all, delete-orphan')
+    grape_variety = db.relationship("Variety", backref="storages")
 
     container_type = db.Column(db.String(50), nullable=False)
     quantity_liters = db.Column(db.Float, nullable=False)

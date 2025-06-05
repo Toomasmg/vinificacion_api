@@ -25,9 +25,9 @@ class GrapeReception(db.Model):
     reception_date = db.Column(db.Date, nullable=False)  # día de recepción
     
     #relacion con variety
-    variety_id = db.Column(db.String(36), db.ForeignKey("variety.id"), nullable=False)
-    variety = db.relationship("Variety", backref="receptions",cascade='all, delete-orphan')
-
-    # Representación como string
+    variety_id = db.Column(db.String(36), db.ForeignKey("variety.id"))
+    
+    variety = db.relationship("Variety", back_populates="grape_receptions")
+    # Representación como strings
     def __repr__(self):
         return f"<GrapeReception {self.id} - {self.name} - {self.grape_type}>"

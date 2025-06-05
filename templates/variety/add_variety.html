@@ -4,7 +4,7 @@
 
 {% block body %}
 <h2 class="mb-4">Agregar Variedad de Uva</h2>
-<form method="POST" action="{{ url_for('variety.add_variety') }}" class="card p-4 shadow-sm bg-white">
+<form method="POST" action="{{ url_for('variety.show_add_variety') }}" class="card p-4 shadow-sm bg-white">
     <div class="mb-3">
         <label for="name" class="form-label">Nombre</label>
         <input type="text" name="name" class="form-control" placeholder="Ej: Malbec" required>
