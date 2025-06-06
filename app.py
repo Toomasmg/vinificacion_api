@@ -7,7 +7,10 @@ from routes.fermentations import fermentations_bp
 from routes.bottlings import bottling_bp
 from routes.aging import aging_bp
 from routes.Storage import storage_bp
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 app = Flask(__name__)
 app.register_blueprint(variety_bp)
